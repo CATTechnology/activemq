@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:beans="http://www.springframework.org/schema/tool"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        ">
+
+    <context:property-placeholder location="classpath:properties/*.properties"/>
+
+    <!--配置包扫描路径-->
+    <context:component-scan base-package="top.takefly.mq"></context:component-scan>
+
+    <!--首先配置activeMQFactory-->
+    <bean id="activeMQAFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="${BROKER_URL}"/>
+        <property name="userName" value="${user}"/>
+        <property name="password" value="${password}"/>
+    </bean>
+
+    <bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+        <property name="targetConnectionFactory" ref="activeMQAFactory"/>
+        <property name="clientId" value="2"/>
+    </bean>
+
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="topic"/>
+        <property name="messageConverter">
+            <bean class="org.springframework.jms.support.converter.MessagingMessageConverter"/>
+        </property>
+        <property name="deliveryMode" value="2"/>
+    </bean>
+
+    <bean id="queue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="spring-activeMQ-queue"/>
+    </bean>
+
+    <bean id="topic" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="spring-activeMQ-topic"/>
+    </bean>
+
+    <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="messageListener" ref="queueListener"/>
+        <property name="destination" ref="queue"/>
+    </bean>
+
+    <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="messageListener" ref="topicListener"/>
+        <property name="destination" ref="topic"/>
+<!--        <property name="sessionAcknowledgeMode" value="2"/>-->
+<!--        <property name="sessionTransacted" value="false"/>-->
+        <property name="subscriptionDurable" value="true"/>
+    </bean>
+
+</beans>

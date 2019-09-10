@@ -1,0 +1,13 @@
+spring:
+  activemq:
+    broker-url: tcp://119.23.64.69:61616
+    password: admin
+    user: admin
+  jms:
+    pub-sub-domain: true
+server:
+  port: 8083
+
+activemq:
+  queue: spring-boot-activemq-queue
+  topic: spring-boot-activemq-topic
