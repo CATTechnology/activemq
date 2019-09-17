@@ -13,7 +13,8 @@ import javax.jms.*;
 public class MessageTopicConsumerTest {
 
 //    private static final String BROKER_URL = "tcp://119.23.64.69:61616";
-    private static final String BROKER_URL = "tcp://localhost:61616";
+//    private static final String BROKER_URL = "tcp://localhost:61616";
+    private static final String BROKER_URL = "auto+nio://192.168.174.129:61608";
     private static final String TOPIC_PERSIST = "Topic_persist";
 
     public static void main(String[] args) throws Exception {
@@ -25,6 +26,7 @@ public class MessageTopicConsumerTest {
         Topic topic = session.createTopic(TOPIC_PERSIST);
         TopicSubscriber topicSubscriber = session.createDurableSubscriber(topic, "Remark");
         connection.start();
+
         Message message = topicSubscriber.receive();
 
         while(null != message){

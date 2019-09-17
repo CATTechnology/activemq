@@ -57,8 +57,6 @@
         <property name="connectionFactory" ref="connectionFactory"/>
         <property name="messageListener" ref="topicListener"/>
         <property name="destination" ref="topic"/>
-<!--        <property name="sessionAcknowledgeMode" value="2"/>-->
-<!--        <property name="sessionTransacted" value="false"/>-->
         <property name="subscriptionDurable" value="true"/>
     </bean>
 

@@ -22,16 +22,13 @@ public class MessageTopicProducerTest {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(BROKER_URL);
         Connection connection = connectionFactory.createConnection();
         connection.start();
-        Map<Object, Object> map = new HashMap<>();
-        map.put(1 , "zhangsan");
-        map.put(2 , "wangwu");
         Session session = connection.createSession(false, 3);
 
         Topic topic = session.createTopic(TOPIC_TEST);
         MessageProducer producer = session.createProducer(topic);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             TextMessage textMessage = session.createTextMessage();
-            textMessage.setText(JSON.toJSONString(map));
+            textMessage.setText("Topic Persistence JDBC---:"+i+1);
             producer.send(textMessage);
 
             MapMessage mapMessage = session.createMapMessage();
@@ -40,7 +37,6 @@ public class MessageTopicProducerTest {
             mapMessage.setLong("年龄" , Long.parseLong("20"));
             producer.send(mapMessage);
         }
-
         connection.close();
         session.close();
     }

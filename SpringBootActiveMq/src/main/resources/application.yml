@@ -1,6 +1,6 @@
 spring:
   activemq:
-    broker-url: tcp://119.23.64.69:61616
+    broker-url: failover:(auto+nio://192.168.174.133:61608,auto+nio://192.168.174.129:61608,auto+nio://192.168.174.132:61608)?randomize=false
     password: admin
     user: admin
   jms:

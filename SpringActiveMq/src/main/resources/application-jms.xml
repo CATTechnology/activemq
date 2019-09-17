@@ -18,6 +18,14 @@
     <!--配置包扫描路径-->
     <context:component-scan base-package="top.takefly.mq"></context:component-scan>
 
+    <bean id="redeliveryPolicy" class="org.apache.activemq.RedeliveryPolicy">
+        <property name="backOffMultiplier" value="2" />
+        <property name="initialRedeliveryDelay" value="1000" />
+        <property name="redeliveryDelay" value="1000" />
+        <property name="maximumRedeliveries" value="3" />
+        <property name="useExponentialBackOff" value="true" />
+    </bean>
+
     <!--首先配置activeMQFactory-->
     <bean id="activeMQAFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL" value="${BROKER_URL}"/>
@@ -57,8 +65,6 @@
         <property name="connectionFactory" ref="connectionFactory"/>
         <property name="messageListener" ref="topicListener"/>
         <property name="destination" ref="topic"/>
-<!--        <property name="sessionAcknowledgeMode" value="2"/>-->
-<!--        <property name="sessionTransacted" value="false"/>-->
         <property name="subscriptionDurable" value="true"/>
     </bean>
 
