@@ -13,7 +13,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <activemq.version>5.15.9</activemq.version>
-        <spring.version>5.1.9.RELEASE</spring.version>
+        <spring.version>5.3.19</spring.version>
         <aspectjweaver.version>1.8.7</aspectjweaver.version>
         <aopalliance.version>1.0</aopalliance.version>
     </properties>
